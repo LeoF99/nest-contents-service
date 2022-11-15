@@ -1,6 +1,5 @@
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { Injectable } from '@nestjs/common';
-import context from '@sanardigital/traceability-core';
 import AppLogger from '../logging/app.logger';
 
 @Injectable()
@@ -16,12 +15,7 @@ export default class AmqpPublisher {
     message: any,
   ): Promise<void> {
     try {
-      await this.amqpConnection.publish(
-        exchange,
-        key,
-        { data: message },
-        { persistent: true, correlationId: context.getTrackId() },
-      );
+      await this.amqpConnection.publish(exchange, key, { data: message });
       this.logger.info(`Finished RabbitMQ Publisher - ${key}`);
     } catch (exception) {
       this.logger.error(

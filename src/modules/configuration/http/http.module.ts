@@ -4,7 +4,6 @@ import { HttpModule, HttpService } from '@nestjs/axios';
 import * as http from 'http';
 import * as https from 'https';
 import AppLogger from '../logging/app.logger';
-import context from '@sanardigital/traceability-core';
 
 @Global()
 @Module({
@@ -24,10 +23,6 @@ export default class AppHttpModule implements OnModuleInit {
     let requestStart;
     this.httpService.axiosRef.interceptors.request.use((config) => {
       const configToBeUsed = config;
-      const trackId = context.getTrackId();
-      if (trackId) {
-        configToBeUsed.headers.trackId = trackId;
-      }
       requestStart = Date.now();
       this.logger.info(
         `Started Outbound HTTP Request ${config.method.toUpperCase()} ${

@@ -7,10 +7,10 @@ import openapiDocument from '../docs/openapi';
 import AppLogger from '../modules/configuration/logging/app.logger';
 import { deploymentEnvironment, Environment } from './deploymentEnvironment';
 
+const GLOBAL_PREFIX = 'v1';
+
 const setupApplication = async (app: INestApplication): Promise<void> => {
-  if (
-    ![Environment.prod, Environment.preprod].includes(deploymentEnvironment())
-  ) {
+  if (![Environment.prod].includes(deploymentEnvironment())) {
     app.use('/api-docs', serve, setup(openapiDocument));
   }
   app.use(
@@ -19,7 +19,7 @@ const setupApplication = async (app: INestApplication): Promise<void> => {
   );
   app.enableShutdownHooks();
   app.useLogger(app.get(AppLogger));
-  app.setGlobalPrefix('v1');
+  app.setGlobalPrefix(GLOBAL_PREFIX);
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 };
 

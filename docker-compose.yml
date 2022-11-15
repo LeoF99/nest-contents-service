@@ -23,17 +23,6 @@ services:
       - '--skip-character-set-client-handshake'
       - '--collation-server=utf8mb4_unicode_ci'
       - '--default-time-zone=+00:00'
-  boilerplate-service:
-    build:
-      context: .
-      target: development
-    volumes:
-      - ./:/sanar/
-      - ./environments/.env.docker:/sanar/environments/.env
-    ports:
-      - '3000:3000'
-    depends_on:
-      - db
   queue:
     container_name: boilerplate_service_queue
     image: rabbitmq:3.8.11-management

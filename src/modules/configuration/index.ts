@@ -1,5 +1,4 @@
 import AuthModule from './auth/auth.module';
-import FeaturesModule from './features/features.module';
 import HealthModule from './health/health.module';
 import MessagingModule from './messaging/messaging.module';
 import MetricsModule from './metrics/metrics.module';
@@ -14,7 +13,6 @@ export const ConfigurationModules = [
     envFilePath: globalThis.ENV_FILE || 'environments/.env',
   }),
   AuthModule,
-  FeaturesModule,
   HealthModule,
   MessagingModule,
   MetricsModule,
