@@ -1,7 +1,6 @@
 import winston from 'winston';
 import { Injectable, LoggerService } from '@nestjs/common';
 import newrelicFormatter from '@newrelic/winston-enricher';
-import context from '@sanardigital/traceability-core';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -34,20 +33,8 @@ export default class AppLogger implements LoggerService {
     this.logger.info(message);
   }
 
-  private traceableInfo = winston.format((info) => {
-    const trackId = context.getTrackId();
-    return {
-      ...info,
-      ...(trackId && { trackId }),
-    };
-  });
-
   private getFormats = (): winston.Logform.Format[] => {
-    const formats = [
-      this.traceableInfo(),
-      winston.format.timestamp(),
-      winston.format.json(),
-    ];
+    const formats = [winston.format.timestamp(), winston.format.json()];
     return isProduction
       ? [...formats, newrelicFormatter(winston)()]
       : [...formats, winston.format.prettyPrint()];

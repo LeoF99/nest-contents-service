@@ -10,7 +10,6 @@ import {
 import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER } from '@nestjs/core';
 import { Test } from '@nestjs/testing';
-import traceabilityMiddleware from '@sanardigital/traceability-middleware';
 
 import setupApplication from '../../../../configuration/setupApplication';
 import OpenApiExceptionFilter from '../../../../filters/openapi.filter';
@@ -29,7 +28,6 @@ import AuthModule from '../../../configuration/auth/auth.module';
 })
 class TestModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(traceabilityMiddleware).forRoutes('*');
     consumer
       .apply(...openapiValidatorMiddleware)
       .exclude('v1/authTest/(.*)')

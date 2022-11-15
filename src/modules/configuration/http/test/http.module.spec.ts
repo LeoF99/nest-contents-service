@@ -5,16 +5,8 @@ import nock from 'nock';
 import AppHttpModule from '../http.module';
 import AppLogger from '../../logging/app.logger';
 import { lastValueFrom } from 'rxjs';
-import context from '@sanardigital/traceability-core';
 
-jest.mock('@sanardigital/traceability-core');
 jest.mock('../../logging/app.logger');
-
-context.getTrackId = jest
-  .fn()
-  .mockReturnValueOnce('first-track-id')
-  .mockReturnValueOnce('different-track-id')
-  .mockReturnValue('other-track-ids');
 
 describe('AppHttpModule', () => {
   let httpService: HttpService;
@@ -39,36 +31,6 @@ describe('AppHttpModule', () => {
   });
 
   describe('httpService', () => {
-    it('adds trackId as header on every request made', async () => {
-      const firstRequest = (
-        await lastValueFrom(httpService.get('https://url/v1'))
-      ).request;
-      const secondRequest = (
-        await lastValueFrom(httpService.get('https://url/v2'))
-      ).request;
-
-      expect(firstRequest?.headers.trackid).toEqual('first-track-id');
-      expect(secondRequest?.headers.trackid).toEqual('different-track-id');
-    });
-
-    it('do not put trackId as header if context trackId is missing', async () => {
-      context.getTrackId = jest
-        .fn()
-        .mockReturnValueOnce(null)
-        .mockReturnValueOnce('different-track-id')
-        .mockReturnValue('other-track-ids');
-
-      const firstRequest = (
-        await lastValueFrom(httpService.get('https://url/v1'))
-      ).request;
-      const secondRequest = (
-        await lastValueFrom(httpService.get('https://url/v2'))
-      ).request;
-
-      expect(firstRequest?.headers.trackid).toBeUndefined();
-      expect(secondRequest?.headers.trackid).toEqual('different-track-id');
-    });
-
     it('sets keepAlive to true for http and https agents', async () => {
       const firstRequest = await lastValueFrom(
         httpService.get('https://url/v1'),
