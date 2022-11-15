@@ -1,0 +1,40 @@
+image: node:16-buster
+
+variables:
+  PACK_MANAGER: 'npm'
+  INFRASTRUCTURE_REPO_ADDRESS: "sanardigital/cross-payments/cross-payments-infrastructure.git"
+  MYSQL_DATABASE: boilerplate_service_test
+  MYSQL_ROOT_PASSWORD: root_password
+  RABBITMQ_DEFAULT_USER: root
+  RABBITMQ_DEFAULT_PASS: root_password
+
+include:
+   - project: 'sanardigital/pipeline-templates'
+     ref: '2.0.0'
+     file: 'node/build/.build-templates.gitlab-ci.yml'
+
+stages:
+  - provision
+  - build
+  - test
+  - sonar
+
+provision:
+  extends: .provision-node-job
+
+build:
+  extends: .build-node-job
+
+tests:
+  extends: .node-base-job
+  script: bash -c "${PACKAGE_MANAGER_RUNNER} run pipeline:test"
+  artifacts:
+    when: always
+    paths:
+      - coverage/*
+  services:
+    - mysql:8.0.20
+    - rabbitmq:3.8.11
+
+sonar:
+   extends: .sonar-node-job

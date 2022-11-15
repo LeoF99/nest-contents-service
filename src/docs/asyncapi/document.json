@@ -1,0 +1,43 @@
+{
+  "asyncapi": "2.4.0",
+  "info": {
+    "title": "X Service",
+    "version": "1.0.0",
+    "description": "AsyncAPI doc for Sanar's x notifications.",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    }
+  },
+  "servers": {
+    "dev": {
+      "url": "b-52c5dbf2-68f0-4423-9401-741ca834a554.mq.us-east-1.amazonaws.com:5672",
+      "description": "Dev RabbitMQ Server",
+      "protocol": "amqp",
+      "protocolVersion": "0-9-1"
+    },
+    "qa": {
+      "url": "b-f269c3dd-dafd-4485-a697-8c4838124368.mq.us-east-1.amazonaws.com:5672",
+      "description": "QA RabbitMQ Server",
+      "protocol": "amqp",
+      "protocolVersion": "0-9-1"
+    },
+    "preprod": {
+      "url": "b-aa77d16b-64ca-43b2-b1a2-50203c397395.mq.us-east-1.amazonaws.com:5672",
+      "description": "Pre-prod RabbitMQ Server",
+      "protocol": "amqp",
+      "protocolVersion": "0-9-1"
+    },
+    "prod": {
+      "url": "b-5db6a24c-c020-4749-8a4c-ec6c287e6b07.mq.us-east-1.amazonaws.com:5672",
+      "description": "Production RabbitMQ Server",
+      "protocol": "amqp",
+      "protocolVersion": "0-9-1"
+    }
+  },
+  "defaultContentType": "application/json",
+  "channels": {},
+  "components": {
+    "messages": {}
+  }
+}
